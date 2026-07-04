@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="app_name">Fiche Projet</string>
+  <string name="title_activity_main">Fiche Projet</string>
+  <string name="package_name">fr.gem.ficheprojet</string>
+  <string name="custom_url_scheme">fr.gem.ficheprojet</string>
+</resources>

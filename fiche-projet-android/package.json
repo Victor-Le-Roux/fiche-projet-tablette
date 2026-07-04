@@ -1,0 +1,27 @@
+{
+  "name": "fiche-projet-android",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 0.0.0.0",
+    "build": "vite build",
+    "preview": "vite preview --host 0.0.0.0",
+    "format": "prettier --write . --ignore-unknown",
+    "format:check": "prettier --check . --ignore-unknown",
+    "cap:sync": "cap sync android",
+    "android": "CAPACITOR_ANDROID_STUDIO_PATH=/opt/android-studio/bin/studio.sh cap open android"
+  },
+  "dependencies": {
+    "@capacitor/core": "^7.4.3",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0"
+  },
+  "devDependencies": {
+    "@capacitor/android": "^7.4.3",
+    "@capacitor/cli": "^7.4.3",
+    "@vitejs/plugin-react": "^4.6.0",
+    "prettier": "^3.8.4",
+    "vite": "^6.3.5"
+  }
+}

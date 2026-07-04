@@ -1,0 +1,4 @@
+1.Avoir une meilleur gsetion des erreurs Quand un champ obligatoire manque, afficher un résumé en haut avec les erreurs principales, en plus du scroll vers le champ concerné.
+2.Quand un champ obligatoire manque, afficher un résumé en haut avec les erreurs principales, en plus du scroll vers le champ concerné.
+3.Améliorer la lisibilité du budget Regrouper les dépenses par type : activité, repas, transport, hébergement, matériel. Le total serait plus facile à comprendre.
+4.Ajouter un récapitulatif avant impression Une page finale claire avec toutes les infos importantes, les champs manquants, le budget estimé et le niveau de validation requis.

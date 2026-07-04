@@ -1,0 +1,8 @@
+{
+  "appId": "fr.gem.ficheprojet",
+  "appName": "Fiche Projet",
+  "webDir": "dist",
+  "server": {
+    "androidScheme": "https"
+  }
+}

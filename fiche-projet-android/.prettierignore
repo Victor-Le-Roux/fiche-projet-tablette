@@ -1,0 +1,17 @@
+node_modules
+dist
+.vite
+android/.gradle
+android/build
+android/app/build
+android/capacitor-cordova-android-plugins/build
+android/app/src/main/assets/capacitor.config.json
+android/app/src/main/assets/capacitor.plugins.json
+android/app/src/main/assets/public
+apk
+*.apk
+*.xlsx
+*.jpg
+*.jpeg
+*.png
+*.jks
