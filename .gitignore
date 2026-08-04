@@ -1,0 +1,60 @@
+# Dependencies and generated web files
+node_modules/
+dist/
+.vite/
+coverage/
+.cache/
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Environment files and local secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+*.jks
+*.keystore
+**/release-signing.properties
+**/signing.properties
+**/keystore.properties
+**/local.properties
+**/google-services.json
+**/GoogleService-Info.plist
+**/service-account*.json
+**/credentials*.json
+
+# Android and Capacitor build output
+**/.gradle/
+**/build/
+**/.externalNativeBuild/
+**/.cxx/
+**/captures/
+**/android/app/src/main/assets/public/
+**/android/app/src/main/assets/capacitor.config.json
+**/android/app/src/main/assets/capacitor.plugins.json
+**/android/app/src/main/res/xml/config.xml
+
+# IDE, editor and operating-system files
+.idea/
+.vscode/
+*.iml
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# Local AI-agent configuration
+.agents/
+.codex/
+
+# Generated project forms containing personal or operational data
+/Fiche projet*.pdf
