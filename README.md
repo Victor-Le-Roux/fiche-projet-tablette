@@ -1,91 +1,107 @@
 # Fiche Projet Android
 
-Application Android **Fiche Projet** pour le GEM Maison Bleue.
+Application Android **Fiche Projet** développée pour le GEM Maison Bleue.
 
-Ce dépôt contient le code source React/Capacitor et un APK prêt à installer sur une tablette Android.
+Le projet utilise **React**, **Vite** et **Capacitor** pour produire une application web empaquetée en application Android native.
 
-## Installation rapide sur une tablette
+## Stack technique
 
-Le fichier APK déjà généré se trouve ici :
+- React 19
+- Vite 6
+- Capacitor 7
+- Android / Gradle
+- JDK 17
+
+## Structure du projet
 
 ```text
-apk/Fiche-Projet.apk
+.
+├── android/                 Projet Android généré par Capacitor
+├── docs/                    Documentation du projet
+├── public/                  Ressources statiques
+├── src/                     Code source React
+│   ├── App.jsx
+│   ├── App.css
+│   ├── logoData.js
+│   └── main.jsx
+├── capacitor.config.json    Configuration Capacitor
+├── package.json
+└── README.md
 ```
 
-### 1. Copier l'APK sur la tablette
-
-Au choix :
-
-- brancher la tablette à l'ordinateur avec un câble USB, puis copier `apk/Fiche-Projet.apk` dans le dossier `Téléchargements` de la tablette ;
-- envoyer le fichier APK sur la tablette par mail, Google Drive, clé USB ou autre moyen de transfert ;
-- utiliser ADB si la tablette est configurée en mode développeur.
-
-### 2. Autoriser l'installation
-
-Sur la tablette :
-
-1. ouvrir l'application **Fichiers** ou **Téléchargements** ;
-2. appuyer sur `Fiche-Projet.apk` ;
-3. si Android bloque l'installation, appuyer sur **Paramètres** ;
-4. autoriser l'installation depuis cette source ;
-5. revenir à l'APK et appuyer sur **Installer**.
-
-Le nom de l'application installée est **Fiche Projet**.
-
-## Installation avec ADB
-
-Cette méthode est pratique si la tablette est branchée à l'ordinateur.
-
-### Préparer la tablette
-
-1. Ouvrir **Paramètres** > **À propos de la tablette**.
-2. Appuyer plusieurs fois sur **Numéro de build** pour activer les options développeur.
-3. Ouvrir **Options pour les développeurs**.
-4. Activer **Débogage USB**.
-5. Brancher la tablette à l'ordinateur et accepter l'autorisation USB affichée sur la tablette.
-
-### Installer l'APK
-
-Depuis la racine du projet :
-
-```bash
-adb devices
-adb install -r apk/Fiche-Projet.apk
-```
-
-`-r` permet de remplacer une version déjà installée de l'application.
-
-## Générer un nouvel APK
-
-À utiliser après une modification du code.
+## Développement local
 
 ### Prérequis
 
-- Node.js et npm ;
-- Android Studio ou le SDK Android ;
-- JDK 17 pour Android Gradle Plugin 8.7 ;
-- une tablette Android, ou un émulateur, pour tester l'installation.
+- Node.js
+- npm
 
-### Configurer une clé de signature privée
-
-La clé Android et ses mots de passe ne doivent jamais être ajoutés à Git. Pour
-une première version, créer une clé locale :
+Installer les dépendances :
 
 ```bash
-cp android/app/release-signing.properties.example android/app/release-signing.properties
-keytool -genkeypair -v \
-  -keystore android/app/fiche-projet-release.jks \
-  -alias fiche-projet \
-  -keyalg RSA \
-  -keysize 2048 \
-  -validity 10000
+npm ci
 ```
 
-Renseigner ensuite les mots de passe choisis dans
-`android/app/release-signing.properties`. Ces deux fichiers locaux sont
-protégés par le `.gitignore`.
+Lancer le serveur de développement :
 
-### Construire l'application
+```bash
+npm run dev
+```
+
+Vite démarre alors l'application en mode développement.
+
+## Générer l'application web
+
+```bash
+npm run build
+```
+
+Les fichiers générés sont placés dans :
+
+```text
+dist/
+```
+
+## Synchroniser avec Android
+
+Après une modification du code React :
+
+```bash
+npm run build
+npm run cap:sync
+```
+
+Cette commande copie la version web générée dans le projet Android et synchronise la configuration Capacitor.
+
+Pour ouvrir le projet dans Android Studio :
+
+```bash
+npm run android
+```
+
+## Générer un APK Android
+
+### Prérequis Android
+
+- Android Studio ou le SDK Android
+- JDK 17
+- Gradle via le wrapper fourni dans `android/`
+
+### Version de développement
+
+Pour compiler et installer directement l'application sur une tablette connectée en USB :
+
+```bash
+npm ci
+npm run build
+npm run cap:sync
+cd android
+./gradlew installDebug
+```
+
+La tablette doit avoir le **débogage USB** activé.
+
+### Version release
 
 Depuis la racine du projet :
 
@@ -100,61 +116,99 @@ cd android
 L'APK généré se trouve ensuite dans :
 
 ```text
-android/app/build/outputs/apk/release/app-release.apk
+android/app/build/outputs/apk/release/
 ```
 
-Pour le copier dans le dossier `apk/` du projet :
+Selon la configuration de signature, le fichier généré peut être signé ou non signé.
+
+## Signature de l'application
+
+Les clés de signature Android et leurs mots de passe ne doivent jamais être ajoutés au dépôt.
+
+Une configuration locale peut être créée à partir de :
 
 ```bash
-cp android/app/build/outputs/apk/release/app-release.apk apk/Fiche-Projet.apk
+cp android/app/release-signing.properties.example android/app/release-signing.properties
 ```
 
-Si aucune configuration de signature privée n'est présente, Gradle produit une
-version release non signée, qui n'est pas destinée à être distribuée.
-
-## Installer directement depuis les sources
-
-Si la tablette est branchée en USB avec le débogage activé :
+Puis générer une clé locale :
 
 ```bash
-npm ci
-npm run build
-npm run cap:sync
-cd android
-./gradlew installDebug
+keytool -genkeypair -v \
+  -keystore android/app/fiche-projet-release.jks \
+  -alias fiche-projet \
+  -keyalg RSA \
+  -keysize 2048 \
+  -validity 10000
 ```
 
-Cette commande compile puis installe une version de développement sur la tablette connectée.
+Renseigner ensuite les informations nécessaires dans :
+
+```text
+android/app/release-signing.properties
+```
+
+Les fichiers de signature locaux sont exclus par le `.gitignore`.
+
+## Installation avec ADB
+
+Vérifier que la tablette est reconnue :
+
+```bash
+adb devices
+```
+
+Puis installer un APK :
+
+```bash
+adb install -r chemin/vers/application.apk
+```
+
+L'option `-r` permet de remplacer une version déjà installée.
 
 ## Problèmes fréquents
 
-### Android refuse l'installation
+### La tablette n'apparaît pas dans `adb devices`
 
-Autoriser l'installation depuis l'application utilisée pour ouvrir l'APK, par exemple **Fichiers**, **Chrome**, **Drive** ou **Gmail**.
+Vérifier :
 
-### L'installation échoue car l'application existe déjà
+- que le câble USB permet le transfert de données ;
+- que le débogage USB est activé ;
+- que l'autorisation USB a été acceptée sur la tablette ;
+- que le mode USB est correctement configuré.
 
-Essayer d'abord :
+### Android refuse l'installation d'un APK
+
+Autoriser l'installation d'applications depuis la source utilisée pour ouvrir l'APK, par exemple **Fichiers**, **Chrome**, **Drive** ou **Gmail**.
+
+### L'installation échoue parce que l'application existe déjà
+
+Essayer :
 
 ```bash
-adb install -r apk/Fiche-Projet.apk
+adb install -r chemin/vers/application.apk
 ```
 
-Si cela ne suffit pas, désinstaller l'ancienne version depuis la tablette, puis réinstaller l'APK.
+Si nécessaire, désinstaller l'ancienne version avant de réinstaller l'application.
 
-### La tablette n'apparait pas avec `adb devices`
+## Données sensibles
 
-Vérifier que :
+Les fiches produites par l'application peuvent contenir des données personnelles ou internes au GEM : noms, signatures, dates, lieux, budgets ou listes de participants.
 
-- le câble USB permet bien le transfert de données ;
-- le débogage USB est activé ;
-- l'autorisation USB a été acceptée sur la tablette ;
-- le mode USB de la tablette est réglé sur transfert de fichiers si nécessaire.
+Ces fichiers ne doivent pas être ajoutés au dépôt sauf s'ils sont entièrement anonymisés.
 
-## Données à ne pas publier
+Le dépôt exclut également :
 
-Les fiches générées peuvent contenir des noms, signatures, dates, lieux,
-budgets ou listes de participants. Elles doivent rester hors du dépôt, ou être
-entièrement anonymisées avant publication. Les fichiers d'environnement, clés
-de signature, mots de passe, configurations locales Android et fichiers IDE
-sont également exclus par le `.gitignore`.
+- les fichiers d'environnement ;
+- les clés et certificats ;
+- les mots de passe ;
+- les fichiers de signature Android ;
+- les APK et AAB générés ;
+- les fichiers locaux des IDE ;
+- les fichiers de build.
+
+## À propos de l'APK
+
+Le dépôt ne versionne pas les fichiers `.apk` générés : ils sont explicitement ignorés par le `.gitignore`.
+
+Pour obtenir une version installable, il faut donc générer l'APK localement à partir des sources avec les commandes ci-dessus.
